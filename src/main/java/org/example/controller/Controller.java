@@ -10,22 +10,25 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-// TODO: Сделать singleton класс
 public class Controller {
+    private static Controller instance;
     private final Model model;
     private final MyFrame frame;
     private final MyPanel panel;
     private Point2D firstPoint;
     private Point2D secondPoint;
-    public Controller() {
+
+
+    private Controller() {
         model = new Model();
         MyShape shape = new MyShape(new Rectangle2D.Double());
         shape.setFb(new NoFill());
         model.setMyShape(shape);
 
         panel = new MyPanel(this);
-        // TODO: Поменять наблюдатель на более современную реализацию
+
         model.addObserver(panel);
+
 
         frame = new MyFrame();
         frame.setPanel(panel);
@@ -36,6 +39,12 @@ public class Controller {
     public void getPointTwo(Point2D p){
         secondPoint = p;
         model.changeShape(firstPoint, secondPoint);
+    }
+
+    public static void getInstance(){
+        if (instance==null){
+            instance= new Controller();
+        }
     }
 
     public void draw(Graphics2D g2) {
