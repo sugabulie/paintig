@@ -14,6 +14,14 @@ public class MyShape {
     private RectangularShape shape;
     private FillBehavior fb;
 
+    public MyShape(Color color,FillBehavior fb,RectangularShape shape){
+        this.shape=shape;
+        this.color=color;
+        this.fb = fb;
+        this.fb.setShape(this.shape);
+        this.fb.setColor(this.color);
+    }
+
     public MyShape(RectangularShape shape) {
         this.shape = shape;
         color = Color.GRAY;

@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import org.example.model.Factory.ShapeFactory;
+import org.example.model.Factory.ShapeType;
 import org.example.model.Model;
 import org.example.model.MyShape;
 import org.example.model.fill.NoFill;
@@ -8,7 +10,6 @@ import org.example.view.MyPanel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class Controller {
     private static Controller instance;
@@ -17,13 +18,16 @@ public class Controller {
     private final MyPanel panel;
     private Point2D firstPoint;
     private Point2D secondPoint;
+    private ShapeFactory shapeFactory;
+
 
 
     private Controller() {
         model = new Model();
-        MyShape shape = new MyShape(new Rectangle2D.Double());
+        shapeFactory = new ShapeFactory();
+        MyShape shape = shapeFactory.createShape(ShapeType.RECTANGULAR_SHAPE, Color.BLUE);
         shape.setFb(new NoFill());
-        model.setMyShape(shape);
+        model.setDrawableShape(shape);
 
         panel = new MyPanel(this);
 
@@ -33,10 +37,12 @@ public class Controller {
         frame = new MyFrame();
         frame.setPanel(panel);
     }
-    public void getPointOne(Point2D p){
+    public void mousePressed(Point2D p){
+        MyShape shape =shapeFactory.createShape(ShapeType.RECTANGULAR_SHAPE,Color.BLUE);
+        model.addShape(shape);
         firstPoint = p;
     }
-    public void getPointTwo(Point2D p){
+    public void mouseDragged(Point2D p){
         secondPoint = p;
         model.changeShape(firstPoint, secondPoint);
     }
