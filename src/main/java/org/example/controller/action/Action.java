@@ -7,8 +7,7 @@ public abstract class Action {
     protected Point2D pressedPoint;
     protected Point2D releasedPoint;
 
-    public void mousePressed(Point point){
-
-    }
+    public abstract void mousePressed(Point point);
+    public abstract void mouseDragged(Point point);
 
 }
