@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import lombok.Getter;
 import org.example.controller.action.Action;
 import org.example.controller.action.ActionDraw;
 import org.example.controller.action.AppAction;
@@ -9,9 +10,11 @@ import org.example.model.Model;
 import org.example.model.MyShape;
 import org.example.model.fill.Fill;
 import org.example.model.fill.NoFill;
+import org.example.view.MenuCreator;
 import org.example.view.MyFrame;
 import org.example.view.MyPanel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -24,6 +27,8 @@ public class Controller {
     private Point2D secondPoint;
     private ShapeFactory shapeFactory;
     private Action action;
+    @Getter
+    private final JMenuBar jMenuBar;
 
 
 
@@ -33,15 +38,17 @@ public class Controller {
         MyShape shape = shapeFactory.createDefaultShape();
         shape.setFb(new NoFill());
         model.setDrawableShape(shape);
-        AppAction action = new ActionDraw (model);
+        action = new ActionDraw (model);
 
         panel = new MyPanel(this);
-
+        MenuCreator menuCreator=MenuCreator.getInstance(this);
+        jMenuBar=menuCreator.createMenu();
         model.addObserver(panel);
 
 
         frame = new MyFrame();
         frame.setPanel(panel);
+        frame.setJMenuBar(jMenuBar);
     }
     public void mousePressed(Point2D p){
         action.mousePressed((Point) p);
@@ -58,5 +65,9 @@ public class Controller {
 
     public void draw(Graphics2D g2) {
         model.draw(g2);
+    }
+
+    public void switchActionDraw(){
+        action= new ActionDraw(model);
     }
 }

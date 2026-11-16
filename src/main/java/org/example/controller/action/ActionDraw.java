@@ -7,7 +7,7 @@ import org.example.model.MyShape;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class ActionDraw implements AppAction {
+public class ActionDraw extends Action {
 
     private Point firstPoint;
     private Point secondPoint;
@@ -23,7 +23,7 @@ public class ActionDraw implements AppAction {
     @Override
     public void mousePressed(Point point) {
         firstPoint = point;
-        MyShape shape =shapeFactory.createDefaultShape();
+        MyShape shape =shapeFactory.createShape();
         model.addShape(shape);
     }
 

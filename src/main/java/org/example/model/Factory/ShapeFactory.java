@@ -13,8 +13,7 @@ public class ShapeFactory {
     private ShapeState defaultShape;
 
     private ShapeFactory() {
-//        defaultShape=new ShapeState(ShapeState)
-
+        defaultShape=ShapeState.getInstance();
     }
 
     public static ShapeFactory getInstance() {
@@ -24,6 +23,10 @@ public class ShapeFactory {
             }
             return instance;
         }
+    }
+
+    public MyShape createShape(){
+        return ShapeType.RECTANGULAR_SHAPE.createShape(defaultShape.isFill()?new Fill():new NoFill(),defaultShape.getColor());
     }
 
     public MyShape createShape(ShapeType shapeType, Color color, boolean isFill) {
