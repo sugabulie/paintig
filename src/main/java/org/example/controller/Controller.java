@@ -3,12 +3,9 @@ package org.example.controller;
 import lombok.Getter;
 import org.example.controller.action.Action;
 import org.example.controller.action.ActionDraw;
-import org.example.controller.action.AppAction;
 import org.example.model.Factory.ShapeFactory;
-import org.example.model.Factory.ShapeType;
 import org.example.model.Model;
 import org.example.model.MyShape;
-import org.example.model.fill.Fill;
 import org.example.model.fill.NoFill;
 import org.example.view.MenuCreator;
 import org.example.view.MyFrame;
@@ -40,8 +37,11 @@ public class Controller {
         model.setDrawableShape(shape);
         action = new ActionDraw (model);
 
+
         panel = new MyPanel(this);
         MenuCreator menuCreator=MenuCreator.getInstance(this);
+        JMenuBar menuBar=menuCreator.createMenu();
+        JToolBar jToolBar=menuCreator.createToolBar(JToolBar.VERTICAL);
         jMenuBar=menuCreator.createMenu();
         model.addObserver(panel);
 
@@ -49,6 +49,8 @@ public class Controller {
         frame = new MyFrame();
         frame.setPanel(panel);
         frame.setJMenuBar(jMenuBar);
+        frame.setJMenuBar(menuBar);
+        frame.add(jToolBar,BorderLayout.EAST);
     }
     public void mousePressed(Point2D p){
         action.mousePressed((Point) p);

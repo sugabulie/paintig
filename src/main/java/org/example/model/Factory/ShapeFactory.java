@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class ShapeFactory {
     private static ShapeFactory instance;
-    private ShapeState defaultShape;
+    private final ShapeState defaultShape;
 
     private ShapeFactory() {
         defaultShape=ShapeState.getInstance();

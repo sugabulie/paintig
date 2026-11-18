@@ -1,19 +1,25 @@
 package org.example.view;
 
-import lombok.Getter;
 import lombok.Setter;
 import org.example.controller.Controller;
 import org.example.model.Factory.ShapeState;
 import org.example.model.Factory.ShapeType;
+import org.example.view.menu.AppCommand;
+import org.example.view.menu.CommandActionListener;
+import org.example.view.menu.SwitchFill;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class MenuCreator {
     private static MenuCreator instance;
     @Setter
     private Controller controller;
     private final ShapeState shapeState = ShapeState.getInstance();
+    private JRadioButtonMenuItem fillItem;
+    private JRadioButtonMenuItem noFillItem;
 
     private MenuCreator(Controller controller){
         this.controller=controller;
@@ -43,6 +49,23 @@ public class MenuCreator {
         return menuBar;
     }
 
+    public JToolBar createToolBar(int orientation){
+        ArrayList<Action> actionArrayList= createToolBarItems();
+        JToolBar jToolBar=new JToolBar(orientation);
+        actionArrayList.forEach(jToolBar::add);
+        return jToolBar;
+
+    }
+
+    private ArrayList<Action> createToolBarItems() {
+        ArrayList<Action> menuItems=new ArrayList<>();
+        URL colorUrl = getClass().getClassLoader().getResource("fill_16x16.png");
+        ImageIcon fillIco = colorUrl == null ? null : new ImageIcon(colorUrl);
+        AppCommand fillCommand = new SwitchFill( true, shapeState,fillItem,noFillItem);
+        menuItems.add(new CommandActionListener("Заливка", fillIco, fillCommand));
+        return menuItems;
+    }
+
     private JMenu createActionMenu() {
         ButtonGroup group=new ButtonGroup();
         JMenu actionMenu=new JMenu("Действие");
@@ -56,14 +79,14 @@ public class MenuCreator {
     private JMenu createFillMenu() {
         ButtonGroup group=new ButtonGroup();
         JMenu fillMenu=new JMenu("Заливка");
-        JRadioButtonMenuItem fillItem=new JRadioButtonMenuItem("С заливкой");
-        fillItem.addActionListener(action ->shapeState.setFill(true));
+        fillItem=new JRadioButtonMenuItem("С заливкой",true);
+        noFillItem=new JRadioButtonMenuItem("Не с заливкой");
+        fillItem.addActionListener(new CommandActionListener(new SwitchFill(true,shapeState,fillItem,noFillItem)));
+        noFillItem.addActionListener(new CommandActionListener(new SwitchFill(true,shapeState,fillItem,noFillItem)));
+        fillMenu.add(noFillItem);
+        group.add(noFillItem);
         fillMenu.add(fillItem);
         group.add(fillItem);
-        JRadioButtonMenuItem nofillItem=new JRadioButtonMenuItem("Не с заливкой");
-        fillMenu.addActionListener(action ->shapeState.setFill(false));
-        fillMenu.add(nofillItem);
-        group.add(nofillItem);
 
         return fillMenu;
     }
