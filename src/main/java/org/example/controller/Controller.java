@@ -17,6 +17,7 @@ import java.awt.geom.Point2D;
 
 public class Controller {
     private static Controller instance;
+    @Getter
     private final Model model;
     private final MyFrame frame;
     private final MyPanel panel;
@@ -33,7 +34,6 @@ public class Controller {
         model = new Model();
         shapeFactory =ShapeFactory.getInstance();
         MyShape shape = shapeFactory.createDefaultShape();
-        shape.setFb(new NoFill());
         model.setDrawableShape(shape);
         action = new ActionDraw (model);
 

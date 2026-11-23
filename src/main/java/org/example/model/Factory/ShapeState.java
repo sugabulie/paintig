@@ -1,11 +1,13 @@
 package org.example.model.Factory;
 
+import lombok.Getter;
 import org.example.controller.Controller;
 import org.example.view.MenuCreator;
 
 import java.awt.*;
 import java.util.Objects;
 
+@Getter
 public class ShapeState {
 
     private static ShapeState instance;
@@ -29,24 +31,12 @@ public class ShapeState {
         this.fill=isFill;
     }
 
-    public ShapeType getShapeType() {
-        return shapeType;
-    }
-
     public void setShapeType(ShapeType shapeType) {
         this.shapeType = shapeType;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
     public void setColor(Color color) {
         this.color = color;
-    }
-
-    public boolean isFill() {
-        return fill;
     }
 
     public void setFill(boolean fill) {

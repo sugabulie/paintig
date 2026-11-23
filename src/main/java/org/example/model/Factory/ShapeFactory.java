@@ -26,15 +26,11 @@ public class ShapeFactory {
     }
 
     public MyShape createShape(){
-        return ShapeType.RECTANGULAR_SHAPE.createShape(defaultShape.isFill()?new Fill():new NoFill(),defaultShape.getColor());
+        return defaultShape.getShapeType().createShape(defaultShape.isFill()?new Fill():new NoFill(),defaultShape.getColor());
     }
 
-    public MyShape createShape(ShapeType shapeType, Color color, boolean isFill) {
-        FillBehavior fillBehavior = isFill ? new Fill() : new NoFill();
-        return shapeType.createShape(fillBehavior, color);
-    }
 
     public MyShape createDefaultShape() {
-        return ShapeType.RECTANGULAR_SHAPE.createShape(new Fill(),Color.BLUE);
+        return ShapeType.RECTANGULAR_SHAPE.createShape(new NoFill(),Color.BLUE);
     }
 }

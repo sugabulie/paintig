@@ -2,11 +2,16 @@ package org.example.view;
 
 import lombok.Setter;
 import org.example.controller.Controller;
+import org.example.controller.action.ActionDraw;
+import org.example.model.Factory.ShapeFactory;
 import org.example.model.Factory.ShapeState;
 import org.example.model.Factory.ShapeType;
+import org.example.model.Model;
 import org.example.view.menu.AppCommand;
 import org.example.view.menu.CommandActionListener;
 import org.example.view.menu.SwitchFill;
+import org.example.view.menu.SwitchShape;
+import org.example.view.menu.SwitchColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,11 +62,31 @@ public class MenuCreator {
 
     }
 
+
+    private ImageIcon loadIcon(String path){
+        URL colorUrl = getClass().getClassLoader().getResource(path);
+        return colorUrl == null ? null : new ImageIcon(colorUrl);
+    }
     private ArrayList<Action> createToolBarItems() {
         ArrayList<Action> menuItems=new ArrayList<>();
-        URL colorUrl = getClass().getClassLoader().getResource("fill_16x16.png");
-        ImageIcon fillIco = colorUrl == null ? null : new ImageIcon(colorUrl);
+        ImageIcon fillIco = loadIcon("fill_16x16.png");
+        ImageIcon colorIco=loadIcon("color_16x16.png");
+        ImageIcon drawIco=loadIcon("draw_16x16.png");
+        ImageIcon ellipseIco=loadIcon("ellipse_16x16.png");
+        ImageIcon moveIco=loadIcon("move_16x16.png");
+        ImageIcon noFillIco=loadIcon("no_fill_16x16.png");
+        ImageIcon rectangularIco=loadIcon("rectangular_16x16.png");
+        ImageIcon redoIco=loadIcon("redo_16x16.png");
+        ImageIcon undoIco=loadIcon("undo_16x16.png");
         AppCommand fillCommand = new SwitchFill( true, shapeState,fillItem,noFillItem);
+        AppCommand noFillCommand=new SwitchFill(false,shapeState,fillItem,noFillItem);
+        menuItems.add(new CommandActionListener("рисовать", drawIco, new AppCommand() {
+            @Override
+            public void execute() {
+                controller.switchActionDraw();
+            }
+        }));
+        menuItems.add(new CommandActionListener("без заливки", noFillIco, noFillCommand));
         menuItems.add(new CommandActionListener("Заливка", fillIco, fillCommand));
         return menuItems;
     }
@@ -82,7 +107,10 @@ public class MenuCreator {
         fillItem=new JRadioButtonMenuItem("С заливкой",true);
         noFillItem=new JRadioButtonMenuItem("Не с заливкой");
         fillItem.addActionListener(new CommandActionListener(new SwitchFill(true,shapeState,fillItem,noFillItem)));
-        noFillItem.addActionListener(new CommandActionListener(new SwitchFill(true,shapeState,fillItem,noFillItem)));
+        noFillItem.addActionListener(new CommandActionListener(new SwitchFill(false,shapeState,fillItem,noFillItem)));
+//        noFillItem.addActionListener(e->{
+//            shapeState.setFill(false);
+//        });
         fillMenu.add(noFillItem);
         group.add(noFillItem);
         fillMenu.add(fillItem);
@@ -118,8 +146,12 @@ public class MenuCreator {
 
         JRadioButtonMenuItem squareItem=new JRadioButtonMenuItem("Прямоугольник",true);
         squareItem.addActionListener(action ->shapeState.setShapeType(ShapeType.RECTANGULAR_SHAPE));
-        shapeMenu.add(shapeMenu);
-        group.add(shapeMenu);
+        JRadioButtonMenuItem ellipsItem=new JRadioButtonMenuItem("кружок",true);
+        ellipsItem.addActionListener(action ->shapeState.setShapeType(ShapeType.ELLIPSE_SHAPE));
+        shapeMenu.add(squareItem);
+        group.add(squareItem);
+        shapeMenu.add(ellipsItem);
+        group.add(ellipsItem);
 
         return shapeMenu;
     }
