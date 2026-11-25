@@ -3,15 +3,13 @@ package org.example.view;
 import lombok.Setter;
 import org.example.controller.Controller;
 import org.example.controller.action.ActionDraw;
+import org.example.controller.action.ActionMove;
+import org.example.controller.action.AppAction;
 import org.example.model.Factory.ShapeFactory;
 import org.example.model.Factory.ShapeState;
 import org.example.model.Factory.ShapeType;
 import org.example.model.Model;
-import org.example.view.menu.AppCommand;
-import org.example.view.menu.CommandActionListener;
-import org.example.view.menu.SwitchFill;
-import org.example.view.menu.SwitchShape;
-import org.example.view.menu.SwitchColor;
+import org.example.view.menu.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +23,7 @@ public class MenuCreator {
     private final ShapeState shapeState = ShapeState.getInstance();
     private JRadioButtonMenuItem fillItem;
     private JRadioButtonMenuItem noFillItem;
+    private Model model;
 
     private MenuCreator(Controller controller){
         this.controller=controller;
@@ -80,14 +79,23 @@ public class MenuCreator {
         ImageIcon undoIco=loadIcon("undo_16x16.png");
         AppCommand fillCommand = new SwitchFill( true, shapeState,fillItem,noFillItem);
         AppCommand noFillCommand=new SwitchFill(false,shapeState,fillItem,noFillItem);
+        AppCommand colorCommand=new SwitchColor();
+        menuItems.add(new CommandActionListener("двигать", moveIco, new AppCommand() {
+            @Override
+            public void execute() {
+                controller.switchActionMove();
+            }
+        }));
         menuItems.add(new CommandActionListener("рисовать", drawIco, new AppCommand() {
             @Override
             public void execute() {
                 controller.switchActionDraw();
             }
         }));
+        menuItems.add(new CommandActionListener("Цвет",colorIco,colorCommand));
         menuItems.add(new CommandActionListener("без заливки", noFillIco, noFillCommand));
         menuItems.add(new CommandActionListener("Заливка", fillIco, fillCommand));
+
         return menuItems;
     }
 
@@ -108,9 +116,6 @@ public class MenuCreator {
         noFillItem=new JRadioButtonMenuItem("Не с заливкой");
         fillItem.addActionListener(new CommandActionListener(new SwitchFill(true,shapeState,fillItem,noFillItem)));
         noFillItem.addActionListener(new CommandActionListener(new SwitchFill(false,shapeState,fillItem,noFillItem)));
-//        noFillItem.addActionListener(e->{
-//            shapeState.setFill(false);
-//        });
         fillMenu.add(noFillItem);
         group.add(noFillItem);
         fillMenu.add(fillItem);

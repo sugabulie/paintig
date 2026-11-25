@@ -72,4 +72,7 @@ public class Controller {
     public void switchActionDraw(){
         action= new ActionDraw(model);
     }
+
+    public void switchActionMove() {action=new ActionDraw(model);
+    }
 }

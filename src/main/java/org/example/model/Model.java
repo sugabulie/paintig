@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Observable;
 
 public class Model extends Observable {
+
     private MyShape drawableShape;
     private List<MyShape> shapeList;
 
@@ -32,8 +33,15 @@ public class Model extends Observable {
         drawableShape.draw(g);
         shapeList.forEach(shape->shape.draw(g));
     }
-
-    public void setDrawableShape(MyShape drawableShape) {
+public void setDrawableShape(MyShape drawableShape) {
         this.drawableShape = drawableShape;
+    }
+
+    public MyShape findShape(Point point) {
+        return drawableShape;
+    }
+
+    public void moveShape(MyShape movingShape, double dx, double dy) {
+
     }
 }
